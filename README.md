@@ -9,7 +9,7 @@
  - `N_{H}`: 1,150,000 aka block number at which the protocol was upgraded from homestead to frontier.
  - `T`: a transaction eg `T = { n: nonce, p: gasPrice, g: gasLimit, t: to, v: value, i: initBytecode, d: data }`
  - `S()`: returns the sender of a transaction eg `S(T) = T.from`
- - `Λ`: account creation function
+ - `Λ`: (lambda) account creation function
  - `KEC`: Keccak SHA-3 hash function
  - `RLP`: Recursive Length Prefix encoding
 
@@ -72,8 +72,8 @@ B = Block = {
   ],
   R: Transaction Receipts = [
     receipt_1 = {
-      σ: root hash of the ETH state after transaction with index 1,
-      u: cumulative gas used so far (immediately after this tx completes),
+      σ: root hash of the ETH state after transaction 1 finishes executing,
+      u: cumulative gas used immediately after this tx completes,
       b: bloom filter,
       l: set of logs created while executing this tx
     }
@@ -111,13 +111,13 @@ The state of the EVM during execution
 }
 ```
 
-## Accrued substate: A
+## Accrued sub-state: A
 
 The data accumulated during tx execution that needs to be remembered for later
 
 ```
 A = {
-  s: suicide set: the accounts to delete at the end of this tx
+  s: suicide set ie the accounts to delete at the end of this tx
   l: logs
   t: touched accounts
   r: refunds eg gas received when storage is freed
@@ -129,3 +129,8 @@ A = {
 If we send a transaction `tx` to create a contract, `tx.to` is set to 0 and we include a `tx.init` field that contains bytecode. This is NOT the bytecode run by the contract, rather it RETURNS the bytecode run by the contract ie the `tx.init` code is run ONCE at contract creation and never again.
 
 If `T.to == 0` then this is a contract creation transaction and `T.init != null`, `T.data == null`
+
+## Op Code notes
+
+CODECOPY: copy bytecode from execution environment (I.b) to memory (μ.m)
+ - stack: [0] location in memory to start copying to, [1] location in bytecode to start copying from, [2] number of bytes to copy
