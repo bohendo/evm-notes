@@ -175,6 +175,7 @@ c = a + b
 
 c = a * b
 
+-----
 ### SUB
 **0x03**
 
@@ -182,6 +183,7 @@ c = a * b
 
 c = a - b
 
+-----
 ### DIV
 **0x04**
 
@@ -189,6 +191,7 @@ c = a - b
 
 c = a / b
 
+-----
 ### SDIV
 **0x05**
 
@@ -196,6 +199,7 @@ c = a / b
 
 c = a / b
 
+-----
 ### MOD
 **0x06**
 
@@ -203,6 +207,7 @@ c = a / b
 
 c = a % b
 
+-----
 ### SMOD
 **0x07**
 
@@ -210,6 +215,7 @@ c = a % b
 
 c = a % b
 
+-----
 ### ADDMOD
 **0x08**
 
@@ -217,6 +223,7 @@ c = a % b
 
 c = (a + b) % m
 
+-----
 ### MULMOD
 **0x09**
 
@@ -224,6 +231,7 @@ c = (a + b) % m
 
 c = (a * b) % m
 
+-----
 ### EXT
 **0x0a**
 
@@ -231,406 +239,918 @@ c = (a * b) % m
 
 c = (a * b) % m
 
+-----
 ### SIGNEXTEND
 **0x0b**
 
 (b, x) => (y)
 
-y = signextend(x, b)
+y = SIGNEXTEND(x, b)
 
 sign extends x from (b + 1) * 8 bits to 256 bits.
 
+-----
 ### LT
 **0x10**
 
+(a, b) => (c)
+
+c = a < b
+
+all values interpreted as uint256
+
+-----
 ### GT
 **0x11**
 
+(a, b) => (c)
+
+c = a > b
+
+all values interpreted as uint256
+
+-----
 ### SLT
 **0x12**
 
+(a, b) => (c)
+
+c = a < b
+
+all values interpreted as int256
+
+-----
 ### SGT
 **0x13**
 
+(a, b) => (c)
+
+c = a > b
+
+all values interpreted as int256
+
+-----
 ### EQ
 **0x14**
 
+(a, b) => (c)
+
+c = a == b
+
+-----
 ### ISZERO
 **0x15**
 
+(a) => (c)
+
+c = a == 0
+
+-----
 ### AND
 **0x16**
 
+(a, b) => (c)
+
+c = a & b
+
+-----
 ### OR
 **0x17**
 
+(a, b) => (c)
+
+c = a | b
+
+-----
 ### XOR
 **0x18**
 
+(a, b) => (c)
+
+c = a ^ b
+
+-----
 ### NOT
 **0x19**
 
+(a) => (c)
+
+c = ~a
+
+-----
 ### BYTE
 **0x1a**
 
+(i, x) => (y)
+
+y = (x >> (248 - i * 8) & 0xff
+
+-----
 ### SHL
 **0x1b**
 
+(shift, value) => (res)
+
+res = value << shift
+
+-----
 ### SHR
 **0x1c**
 
+(shift, value) => (res)
+
+res = value >> shift
+
+-----
 ### SAR
 **0x1d**
 
+(shift, value) => (res)
+
+res = value >> shift
+
+value: int256
+
+-----
 ### SHA3
 **0x20**
 
+(offset, len) => (hash)
+
+hash = keccak256(memory[offset:offset+len])
+
+-----
 ### ADDRESS
 **0x30**
 
+() => (address(this))
+
+-----
 ### BALANCE
 **0x31**
 
+() => (address(this).balance)
+
+-----
 ### ORIGIN
 **0x32**
 
+() => (tx.origin)
+
+-----
 ### CALLER
 **0x33**
 
+() => (msg.sender)
+
+-----
 ### CALLVALUE
 **0x34**
 
+() => (msg.value)
+
+-----
 ### CALLDATALOAD
 **0x35**
 
+(index) => (msg.data[index:index+32])
+
+-----
 ### CALLDATASIZE
 **0x36**
 
+() => (msg.data.size)
+
+-----
 ### CALLDATACOPY
 **0x37**
 
+(memOffset, offset, length) => ()
+
+memory[memOffset:memOffset+len] = msg.data[offset:offset+len]
+
+-----
 ### CODESIZE
 **0x38**
 
+() => (address(this).code.size)
+
+-----
 ### CODECOPY
 **0x39**
 
-(memOst, codeOst, len) => ()
+(memOffset, codeOffset, len) => ()
 
-memory[memOst:memOst+len] = address(this).code[codeOst:codeOst+len]
+memory[memOffset:memOffset+len] = address(this).code[codeOffset:codeOffset+len]
 
+-----
 ### GASPRICE
 **0x3a**
 
+() => (tx.gasprice)
+
+-----
 ### EXTCODESIZE
 **0x3b**
 
+(addr) => (address(addr).code.size)
+
+-----
 ### EXTCODECOPY
 **0x3c**
 
+(addr, memOffset, offset, length) => ()
+
+memory[memOffset:memOffset+len] = address(addr).code[codeOffset:codeOffset+len]
+
+-----
 ### RETURNDATASIZE
 **0x3d**
 
+() => (size)
+
+size = RETURNDATASIZE()
+
+The number of bytes that were returned from the last ext call
+
+-----
 ### RETURNDATACOPY
 **0x3e**
 
+(memOffset, offset, length) => ()
+
+memory[memOffset:memOffset+len] = RETURNDATA[codeOffset:codeOffset+len]
+
+RETURNDATA is the data returned from the last external call
+
+-----
 ### EXTCODEHASH
 **0x3f**
 
+(addr) => (hash)
+
+hash = address(addr).exists ? keccak256(address(addr).code) : 0
+
+-----
 ### BLOCKHASH
 **0x40**
 
+(number) => (hash)
+
+hash = block.blockHash(number)
+
+-----
 ### COINBASE
 **0x41**
 
+() => (block.coinbase)
+
+-----
 ### TIMESTAMP
 **0x42**
 
+() => (block.timestamp)
+
+-----
 ### NUMBER
 **0x43**
 
+() => (block.number)
+
+-----
 ### DIFFICULTY
 **0x44**
 
+() => (block.difficulty)
+
+-----
 ### GASLIMIT
 **0x45**
 
+() => (block.gaslimit)
+
+-----
 ### CHAINID
 **0x46**
 
+() => (chainid)
+
+where chainid = 1 for mainnet & some other value for other networks
+
+-----
 ### SELFBALANCE
 **0x47**
 
+() => (address(this).balance)
+
+-----
 ### BASEFEE
 **0x48**
 
+() => (block.basefee)
+
+current block's base fee (related to EIP1559)
+
+-----
 ### POP
 **0x50**
 
+(a) => ()
+
+discards the top stack item
+
+-----
 ### MLOAD
 **0x51**
 
+(offset) => (value)
+
+value = memory[offset:offset+32]
+
+-----
 ### MSTORE
 **0x52**
 
+(offset, value) => ()
+
+memory[offset:offset+32] = value
+
+-----
 ### MSTORE8
 **0x53**
 
+(offset, value) => ()
+
+memory[offset:offset+32] = value & 0xff
+
+-----
 ### SLOAD
 **0x54**
 
+(key) => (value)
+
+value = storage[key]
+
+-----
 ### SSTORE
 **0x55**
 
+(key, value) => ()
+
+storage[key] = value
+
+-----
 ### JUMP
 **0x56**
 
+(dest) => ()
+
+pc = dest
+
+-----
 ### JUMPI
 **0x57**
 
+(dest, cond) => ()
+
+pc = cond ? dest : pc + 1
+
+-----
 ### PC
 **0x58**
 
+() => (pc)
+
+-----
 ### MSIZE
 **0x59**
 
+() => (memory.size)
+
+-----
 ### GAS
 **0x5a**
 
+() => (gasRemaining)
+
+not including the gas required for this opcode
+
+-----
 ### JUMPDEST
 **0x5b**
 
+() => ()
+
+noop, marks a valid jump destination
+
+-----
 ### PUSH1
 **0x60**
 
+() => (address(this).code[pc+1:pc+2])
+
+-----
 ### PUSH2
 **0x61**
 
+() => (address(this).code[pc+2:pc+3])
+
+-----
 ### PUSH3
 **0x62**
 
+() => (address(this).code[pc+3:pc+4])
+
+-----
 ### PUSH4
 **0x63**
 
+() => (address(this).code[pc+4:pc+5])
+
+-----
 ### PUSH5
 **0x64**
 
+() => (address(this).code[pc+5:pc+6])
+
+-----
 ### PUSH6
 **0x65**
 
+() => (address(this).code[pc+6:pc+7])
+
+-----
 ### PUSH7
 **0x66**
 
+() => (address(this).code[pc+7:pc+8])
+
+-----
 ### PUSH8
 **0x67**
 
+() => (address(this).code[pc+8:pc+9])
+
+-----
 ### PUSH9
 **0x68**
 
+() => (address(this).code[pc+9:pc+10])
+
+-----
 ### PUSH10
 **0x69**
 
+() => (address(this).code[pc+10:pc+11])
+
+-----
 ### PUSH11
 **0x6a**
 
+() => (address(this).code[pc+11:pc+12])
+
+-----
 ### PUSH12
 **0x6b**
 
+() => (address(this).code[pc+12:pc+13])
+
+-----
 ### PUSH13
 **0x6c**
 
+() => (address(this).code[pc+13:pc+14])
+
+-----
 ### PUSH14
 **0x6d**
 
+() => (address(this).code[pc+14:pc+15])
+
+-----
 ### PUSH15
 **0x6e**
 
+() => (address(this).code[pc+15:pc+16])
+
+-----
 ### PUSH16
 **0x6f**
 
+() => (address(this).code[pc+16:pc+17])
+
+-----
 ### PUSH17
 **0x70**
 
+() => (address(this).code[pc+17:pc+18])
+
+-----
 ### PUSH18
 **0x71**
 
+() => (address(this).code[pc+18:pc+19])
+
+-----
 ### PUSH19
 **0x72**
 
+() => (address(this).code[pc+19:pc+20])
+
+-----
 ### PUSH20
 **0x73**
 
+() => (address(this).code[pc+20:pc+21])
+
+-----
 ### PUSH21
 **0x74**
 
+() => (address(this).code[pc+21:pc+22])
+
+-----
 ### PUSH22
 **0x75**
 
+() => (address(this).code[pc+22:pc+23])
+
+-----
 ### PUSH23
 **0x76**
 
+() => (address(this).code[pc+23:pc+24])
+
+-----
 ### PUSH24
 **0x77**
 
+() => (address(this).code[pc+24:pc+25])
+
+-----
 ### PUSH25
 **0x78**
 
+() => (address(this).code[pc+25:pc+26])
+
+-----
 ### PUSH26
 **0x79**
 
+() => (address(this).code[pc+26:pc+27])
+
+-----
 ### PUSH27
 **0x7a**
 
+() => (address(this).code[pc+27:pc+28])
+
+-----
 ### PUSH28
 **0x7b**
 
+() => (address(this).code[pc+28:pc+29])
+
+-----
 ### PUSH29
 **0x7c**
 
+() => (address(this).code[pc+29:pc+30])
+
+-----
 ### PUSH30
 **0x7d**
 
+() => (address(this).code[pc+30:pc+31])
+
+-----
 ### PUSH31
 **0x7e**
 
+() => (address(this).code[pc+31:pc+32])
+
+-----
 ### PUSH32
 **0x7f**
 
+() => (address(this).code[pc+32:pc+33])
+
+-----
 ### DUP1
 **0x80**
 
+(1, 1) => (1, 1)
+
+-----
 ### DUP2
 **0x81**
 
+(1, 2) => (2, 1, 2)
+
+-----
 ### DUP3
 **0x82**
 
+(1, 2, 3) => (3, 1, 2, 3)
+
+-----
 ### DUP4
 **0x83**
 
+(1, ..., 4) => (4, 1, ..., 4)
+
+-----
 ### DUP5
 **0x84**
 
+(1, ..., 5) => (5, 1, ..., 5)
+
+-----
 ### DUP6
 **0x85**
 
+(1, ..., 6) => (6, 1, ..., 6)
+
+-----
 ### DUP7
 **0x86**
 
+(1, ..., 7) => (7, 1, ..., 7)
+
+-----
 ### DUP8
 **0x87**
 
+(1, ..., 8) => (8, 1, ..., 8)
+
+-----
 ### DUP9
 **0x88**
 
+(1, ..., 9) => (9, 1, ..., 9)
+
+-----
 ### DUP10
 **0x89**
 
+(1, ..., 10) => (10, 1, ..., 10)
+
+-----
 ### DUP11
 **0x8a**
 
+(1, ..., 11) => (11, 1, ..., 11)
+
+-----
 ### DUP12
 **0x8b**
 
+(1, ..., 12) => (12, 1, ..., 12)
+
+-----
 ### DUP13
 **0x8c**
 
+(1, ..., 13) => (13, 1, ..., 13)
+
+-----
 ### DUP14
 **0x8d**
 
+(1, ..., 14) => (14, 1, ..., 14)
+
+-----
 ### DUP15
 **0x8e**
 
+(1, ..., 15) => (15, 1, ..., 15)
+
+-----
 ### DUP16
 **0x8f**
 
+(1, ..., 16) => (16, 1, ..., 16)
+
+-----
 ### SWAP1
 **0x90**
 
+(1, 2) => (2, 1)
+
+-----
 ### SWAP2
 **0x91**
 
+(1, 2, 3) => (3, 2, 1)
+
+-----
 ### SWAP3
 **0x92**
 
+(1, ..., 4) => (4, ..., 1)
+
+-----
 ### SWAP4
 **0x93**
 
+(1, ..., 5) => (5, ..., 1)
+
+-----
 ### SWAP5
 **0x94**
 
+(1, ..., 6) => (6, ..., 1)
+
+-----
 ### SWAP6
 **0x95**
 
+(1, ..., 7) => (7, ..., 1)
+
+-----
 ### SWAP7
 **0x96**
 
+(1, ..., 8) => (8, ..., 1)
+
+-----
 ### SWAP8
 **0x97**
 
+(1, ..., 9) => (9, ..., 1)
+
+-----
 ### SWAP9
 **0x98**
 
+(1, ..., 10) => (10, ..., 1)
+
+-----
 ### SWAP10
 **0x99**
 
+(1, ..., 11) => (11, ..., 1)
+
+-----
 ### SWAP11
 **0x9a**
 
+(1, ..., 12) => (12, ..., 1)
+
+-----
 ### SWAP12
 **0x9b**
 
+(1, ..., 13) => (13, ..., 1)
+
+-----
 ### SWAP13
 **0x9c**
 
+(1, ..., 14) => (14, ..., 1)
+
+-----
 ### SWAP14
 **0x9d**
 
+(1, ..., 15) => (15, ..., 1)
+
+-----
 ### SWAP15
 **0x9e**
 
+(1, ..., 16) => (16, ..., 1)
+
+-----
 ### SWAP16
 **0x9f**
 
+(1, ..., 17) => (17, ..., 1)
+
+-----
 ### LOG0
 **0xa0**
 
+(offset, length) => ()
+
+emit(memory[offset:offset+length])
+
+-----
 ### LOG1
 **0xa1**
 
+(offset, length, topic0) => ()
+
+emit(memory[offset:offset+length], topic0)
+
+-----
 ### LOG2
 **0xa2**
 
+(offset, length, topic0, topic1) => ()
+
+emit(memory[offset:offset+length], topic0, topic1)
+
+-----
 ### LOG3
 **0xa3**
 
+(offset, length, topic0, topic1, topic2) => ()
+
+emit(memory[offset:offset+length], topic0, topic1, topic2)
+
+-----
 ### LOG4
 **0xa4**
 
+(offset, length, topic0, topic1, topic2, topic3) => ()
+
+emit(memory[offset:offset+length], topic0, topic1, topic2, topic3)
+
+-----
 ### CREATE
 **0xf0**
 
+(value, offset, length) => (addr)
+
+addr = keccak256(rlp([address(this), this.nonce]))[12:]
+addr.code = exec(memory[offset:offset+length])
+addr.balance += value
+this.balance -= value
+this.nonce += 1
+
+-----
 ### CALL
 **0xf1**
 
+(gas, addr, value, argsOffset, argsLength, retOffset, retLength) => (success)
+
+memory[retOffset:retOffset+retLength] = address(addr).callcode.gas(gas).value(value)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)
+
+-----
 ### CALLCODE
 **0xf2**
 
+(gas, addr, value, argsOffset, argsLength, retOffset, retLength) => (success)
+
+memory[retOffset:retOffset+retLength] = address(addr).callcode.gas(gas).value(value)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)
+
+TODO: what's the difference between this & CALL?
+
+-----
 ### RETURN
 **0xf3**
 
+(offset, length) => ()
+
+return memory[offset:offset+length]
+
+-----
 ### DELEGATECALL
 **0xf4**
 
+(gas, addr, argsOffset, argsLength, retOffset, retLength) => (success)
+
+memory[retOffset:retOffset+retLength] = address(addr).delegatecall.gas(gas)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)
+
+-----
 ### CREATE2
 **0xf5**
 
+(value, offset, length, salt) => (addr)
+
+initCode = memory[offset:offset+length]
+addr = keccak256(0xff ++ address(this) ++ salt ++ keccak256(initCode))[12:]
+address(addr).code = exec(initCode)
+
+
+-----
 ### STATICCALL
 **0xfa**
 
+(gas, addr, argsOffset, argsLength, retOffset, retLength) => (success)
+
+memory[retOffset:retOffset+retLength] = address(addr).delegatecall.gas(gas)(memory[argsOffset:argsOffset+argsLength])
+success = true (unless the prev call reverted)
+
+TODO: what's the difference between this & DELEGATECALL?
+
+-----
 ### REVERT
 **0xfd**
 
+(offset, length) => ()
+
+revert(memory[offset:offset+length])
+
+-----
 ### SELFDESTRUCT
 **0xff**
 
+(addr) => ()
+
+address(addr).send(address(this).balance)
+this.code = 0
