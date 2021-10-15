@@ -85,9 +85,9 @@ B = Block = {
 
 ```
 I = Execution Environment = {
-  a: address of the account which owns the executing code
-  o: original sender of the tx that initialized this execution
-  p: price of gas
+  a: `address(this)` address of the account which owns the executing code
+  o: `tx.origin` original sender of the tx that initialized this execution
+  p: `tx.gasPrice` price of gas
   d: data aka byte array of method id & args
   s: sender of this tx or initiator of this execution
   v: value send along w this execution or transaction
@@ -131,6 +131,47 @@ If we send a transaction `tx` to create a contract, `tx.to` is set to 0 and we i
 If `T.to == 0` then this is a contract creation transaction and `T.init != null`, `T.data == null`
 
 ## Op Code notes
+
+|[00](#stop)|[01](#add)|[02](#mul)|03|04|05|06|07|08|09|0a|0b|--|--|--|--|
+|10|11|12|13|14|15|16|17|18|19|1a|1b|1c|1d|--|--|
+|20|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|30|31|32|33|34|35|36|37|38|[39](#codecopy)|3a|3b|3c|3d|3e|3f|
+|40|41|42|43|44|45|46|47|48|--|--|--|--|--|--|--|
+|50|51|52|53|54|55|56|57|58|59|5a|5b|--|--|--|--|
+|60|61|62|63|64|65|66|67|68|69|6a|6b|6c|6d|6e|6f|
+|70|71|72|73|74|75|76|77|78|79|7a|7b|7c|7d|7e|7f|
+|80|81|82|83|84|85|86|87|88|89|8a|8b|8c|8d|8e|8f|
+|90|91|92|93|94|95|96|97|98|99|9a|9b|9c|9d|9e|9f|
+|a0|a1|a2|a3|a4|--|--|--|--|--|--|--|--|--|--|--|
+|b0|b1|b2|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|f0|f1|f2|f3|f4|f5|--|--|--|--|fa|--|--|fd|--|ff|
+
+## STOP
+
+() => ()
+
+halts execution
+
+## ADD
+
+(a, b) => (c)
+
+c = a + b
+
+## MUL
+
+(a, b) => (c)
+
+c = a * b
+
+## CODECOPY
+
+(memOst, codeOst, len) => ()
+
+memory[memOst:memOst+len] = address(this).code[codeOst:codeOst+len]
 
 CODECOPY: copy bytecode from execution environment (I.b) to memory (μ.m)
  - stack: [0] location in memory to start copying to, [1] location in bytecode to start copying from, [2] number of bytes to copy
